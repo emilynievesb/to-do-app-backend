@@ -5,7 +5,6 @@ const createNewUser = async (req, res) => {
         const newUser = new User(req.DTO);
         const response = await newUser.createNewUser();
 
-        // retornamos la lista de empresas
         return res.json({
             statusCode: 200,
             status: true,
@@ -20,9 +19,28 @@ const createNewUser = async (req, res) => {
         });
     }
 };
+const loginUser = async (req, res) => {
+    try {
+        const user = new User(req.DTO);
+        const response = await user.loginUser();
 
+        return res.json({
+            statusCode: 200,
+            status: true,
+            message: 'Agregado correctamente',
+            response,
+        });
+    } catch (error) {
+        res.status(400).json({
+            statusCode: 400,
+            status: true,
+            message: error.message,
+        });
+    }
+};
 const httpMethods = {
     createNewUser,
+    loginUser,
 };
 
 export default httpMethods;
