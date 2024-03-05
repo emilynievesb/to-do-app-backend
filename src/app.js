@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import config from './config/config.js';
 import connect from './config/db.js';
+import { initAPIRoutes } from './routes/main.routes.js';
 
 const createApp = async () => {
     // llamamos a express
@@ -32,7 +33,7 @@ const createApp = async () => {
             console.error('Error al conectar a la base de datos:', error);
         });
     // ruta principal
-    // app.use('/api',);
+    app.use('/api', initAPIRoutes());
 
     return { app };
 };
