@@ -8,7 +8,7 @@ class User {
     password;
     tasks;
     constructor({
-        name,
+        name = 'A name default',
         username,
         password,
         tasks = [
@@ -48,7 +48,29 @@ class User {
             throw new Error('El nombre de usuario ya está en uso');
         }
     }
+    async loginUser() {
+        try {
+            const user = await UserModel.findOne({ username: this.username });
+            if (!user) {
+                throw new Error('Usuario no encontrado');
+            }
 
+            //* Comparar la contraseña ingresada con la almacenada en la base de datos
+            const passwordMatch = await bcrypt.compare(this.password, user.password);
+            if (!passwordMatch) {
+                throw new Error('Contraseña incorrecta');
+            }
+
+            // Devolver el token y cualquier otra información que desees incluir
+            return {
+                token: this.generateAccessToken(),
+                name: user.name,
+                username: user.username,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
     async createNewUser() {
         try {
             await this.existingUser();
@@ -60,6 +82,7 @@ class User {
                 res,
             };
         } catch (error) {
+            console.log(error.errInfo);
             throw error;
         }
     }
