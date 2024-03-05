@@ -38,9 +38,30 @@ const loginUser = async (req, res) => {
         });
     }
 };
+
+const createNewTask = async (req, res) => {
+    try {
+        const user = new User({ username: req.usuario.username, task: req.DTO });
+        const response = await user.createNewTask();
+
+        return res.json({
+            statusCode: 200,
+            status: true,
+            message: 'Agregado correctamente',
+            response,
+        });
+    } catch (error) {
+        res.status(400).json({
+            statusCode: 400,
+            status: true,
+            message: error.message,
+        });
+    }
+};
 const httpMethods = {
     createNewUser,
     loginUser,
+    createNewTask,
 };
 
 export default httpMethods;
