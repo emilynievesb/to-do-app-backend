@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../schemas/user.schema.js';
 import config from '../config/config.js';
+import Task from './tasks.service.js';
 class User {
     name;
     username;
@@ -11,20 +12,19 @@ class User {
         name = 'A name default',
         username,
         password,
-        tasks = [
-            {
-                title: 'Tarea de ejemplo',
-                description: 'Descripción de la tarea',
-                dead_date: new Date('2024-12-15'),
-                degree: 'Muy importante',
-                status: false,
-            },
-        ],
+        task = {
+            id: 1,
+            title: 'Tarea de ejemplo',
+            description: 'Descripción de la tarea',
+            dead_date: new Date('2024-12-15'),
+            degree: 'Muy importante',
+            status: false,
+        },
     }) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.tasks = tasks;
+        this.task = task;
     }
     generateAccessToken() {
         try {
@@ -61,7 +61,6 @@ class User {
                 throw new Error('Contraseña incorrecta');
             }
 
-            // Devolver el token y cualquier otra información que desees incluir
             return {
                 token: this.generateAccessToken(),
                 name: user.name,
@@ -75,10 +74,23 @@ class User {
         try {
             await this.existingUser();
             const hashedPassword = await this.passwordHash();
-            const newUser = new UserModel({ name: this.name, username: this.username, password: hashedPassword, tasks: this.tasks });
+            const newUser = new UserModel({ name: this.name, username: this.username, password: hashedPassword, tasks: [this.task] });
             const res = await newUser.save();
             return {
                 token: this.generateAccessToken(),
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
+    async createNewTask() {
+        try {
+            const task = new Task(this.task);
+            const res = await task.createTask(this.username);
+            console.log(res);
+            return {
                 res,
             };
         } catch (error) {
