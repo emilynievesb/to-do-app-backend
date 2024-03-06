@@ -2,7 +2,7 @@ import Router from 'express';
 import userController from '../controller/user.ctrl.js';
 import { createUserDTO, loginUserDTO } from '../DTO/user.dto.js';
 import verifyAccessToken from '../middlewares/verifyToken.js';
-import { changeStatusTaskDTO, createTaskDTO, getTaskDTO } from '../DTO/task.dto.js';
+import { changeStatusTaskDTO, createTaskDTO, getTaskDTO, updateTaskDTO } from '../DTO/task.dto.js';
 
 const userInitRoute = () => {
     const router = Router();
@@ -19,7 +19,8 @@ const userInitRoute = () => {
     router.get('/get-task/', verifyAccessToken, getTaskDTO, userController.getTask);
     //? Ruta para cambiar estado de la task
     router.put('/change-status-task/', verifyAccessToken, changeStatusTaskDTO, userController.changeStatusTask);
-
+    //? Ruta para actualizar datos de la task
+    router.put('/update-task/', verifyAccessToken, updateTaskDTO, userController.updateTask);
     return router;
 };
 
