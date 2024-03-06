@@ -89,6 +89,18 @@ class User {
         try {
             const task = new Task(this.task);
             const res = await task.createTask(this.username);
+            return {
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
+    async changeStatusTask() {
+        try {
+            const task = new Task(this.task);
+            const res = await task.changeStatusTask(this.username);
             console.log(res);
             return {
                 res,

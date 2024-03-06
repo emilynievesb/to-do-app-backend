@@ -1,6 +1,7 @@
 import UserModel from '../schemas/user.schema.js';
 
 class Task {
+    id;
     title;
     description;
     dead_date;
@@ -23,9 +24,29 @@ class Task {
                 id: nextId,
             };
             user.tasks.push(newTask);
-            console.log(user);
             await user.save();
             return newTask;
+        } catch (error) {
+            console.error('Error al crear tarea:', error.message);
+            throw error;
+        }
+    }
+    async changeStatusTask(username) {
+        try {
+            const user = await UserModel.findOne({ username: username });
+            let { tasks } = user;
+            console.log(tasks);
+            const updatedTasks = tasks.map((t) => {
+                if (t.id === this.id) {
+                    return { ...t, status: !t.status };
+                }
+                return t;
+            });
+            user.tasks = updatedTasks;
+            console.log(user.tasks);
+
+            await user.save();
+            return updatedTasks;
         } catch (error) {
             console.error('Error al crear tarea:', error.message);
             throw error;

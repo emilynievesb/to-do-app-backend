@@ -1,4 +1,4 @@
-import { boolean, date, object, string } from 'yup';
+import { boolean, date, number, object, string } from 'yup';
 
 export const createTaskDTO = async (req, res, next) => {
     try {
@@ -11,6 +11,18 @@ export const createTaskDTO = async (req, res, next) => {
         });
 
         req.DTO = await taskSchema.validate(req.body);
+        next();
+    } catch (error) {
+        res.status(400).json({ status: 'fail', message: error.errors });
+    }
+};
+export const changeStatusTaskDTO = async (req, res, next) => {
+    try {
+        const taskSchema = object({
+            id: number().required('El id de la task es requerido'),
+        });
+
+        req.DTO = await taskSchema.validate(req.query);
         next();
     } catch (error) {
         res.status(400).json({ status: 'fail', message: error.errors });
