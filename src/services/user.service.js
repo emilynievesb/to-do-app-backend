@@ -99,8 +99,20 @@ class User {
     }
     async getTasks() {
         try {
-            const task = new Task();
+            const task = new Task({});
             const res = await task.getTasks(this.username);
+            return {
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
+    async getTask() {
+        try {
+            const task = new Task(this.task);
+            const res = await task.getTask(this.username);
             return {
                 res,
             };
