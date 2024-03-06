@@ -7,7 +7,7 @@ class Task {
     dead_date;
     degree;
     status;
-    constructor({ id, title, description, dead_date, degree = 'Normal', status = false }) {
+    constructor({ id = 1, title = 'Título', description = 'Descripción', dead_date = 'fecha', degree = 'Normal', status = false }) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -17,8 +17,18 @@ class Task {
     }
     async getTasks(username) {
         try {
-            const user = await UserModel.findOne({ username: username });
+            const user = await UserModel.findOne({ username });
             return user.tasks;
+        } catch (error) {
+            console.error('Error al consultar tareas:', error.message);
+            throw error;
+        }
+    }
+    async getTask(username) {
+        try {
+            const user = await UserModel.findOne({ username });
+            const { tasks } = user;
+            return tasks.find((task) => task.id === this.id);
         } catch (error) {
             console.error('Error al consultar tareas:', error.message);
             throw error;
@@ -26,7 +36,7 @@ class Task {
     }
     async createTask(username) {
         try {
-            const user = await UserModel.findOne({ username: username });
+            const user = await UserModel.findOne({ username });
             const { tasks } = user;
             const nextId = Math.max(...tasks.map((t) => t.id)) + 1;
             const newTask = {
