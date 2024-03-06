@@ -81,10 +81,22 @@ class Task {
             });
             user.tasks = updatedTasks;
             await user.save();
-
             return user.tasks;
         } catch (error) {
             console.error('Error al actualizar tarea:', error.message);
+            throw error;
+        }
+    }
+    async deleteTask(username) {
+        try {
+            const user = await UserModel.findOne({ username: username });
+            let { tasks } = user;
+            const updatedTasks = tasks.filter((task) => task.id !== this.id);
+            user.tasks = updatedTasks;
+            await user.save();
+            return user.tasks;
+        } catch (error) {
+            console.error('Error al eliminación de una tarea:', error.message);
             throw error;
         }
     }

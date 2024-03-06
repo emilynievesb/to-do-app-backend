@@ -145,6 +145,18 @@ class User {
             throw error;
         }
     }
+    async deleteTask() {
+        try {
+            const task = new Task(this.task);
+            const res = await task.deleteTask(this.username);
+            return {
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
 }
 
 export default User;
