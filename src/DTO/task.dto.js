@@ -56,3 +56,15 @@ export const updateTaskDTO = async (req, res, next) => {
         res.status(400).json({ status: 'fail', message: error.errors });
     }
 };
+export const deleteTaskDTO = async (req, res, next) => {
+    try {
+        const taskSchema = object({
+            id: number().required('El id de la task es requerido'),
+        });
+
+        req.DTO = await taskSchema.validate(req.query);
+        next();
+    } catch (error) {
+        res.status(400).json({ status: 'fail', message: error.errors });
+    }
+};
