@@ -41,3 +41,18 @@ export const changeStatusTaskDTO = async (req, res, next) => {
         res.status(400).json({ status: 'fail', message: error.errors });
     }
 };
+export const updateTaskDTO = async (req, res, next) => {
+    try {
+        const taskSchema = object({
+            title: string().required('El título de la tarea es requerido'),
+            description: string().required('La descripción de la tarea es requerida'),
+            dead_date: date().required('La fecha límite de la tarea es requerida'),
+            degree: string().oneOf(['Muy importante', 'Importante', 'Normal']).required('El grado de importancia de la tarea es requerido'),
+        });
+
+        req.DTO = await taskSchema.validate(req.body);
+        next();
+    } catch (error) {
+        res.status(400).json({ status: 'fail', message: error.errors });
+    }
+};
