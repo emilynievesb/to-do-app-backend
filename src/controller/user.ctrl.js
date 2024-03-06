@@ -60,7 +60,7 @@ const createNewTask = async (req, res) => {
 };
 const changeStatusTask = async (req, res) => {
     try {
-        const user = new User({ username: req.usuario.username, task: { id: req.DTO } });
+        const user = new User({ username: req.usuario.username, task: req.DTO });
         const response = await user.changeStatusTask();
 
         return res.json({

@@ -7,7 +7,8 @@ class Task {
     dead_date;
     degree;
     status;
-    constructor({ title, description, dead_date, degree = 'Normal', status = false }) {
+    constructor({ id, title, description, dead_date, degree = 'Normal', status = false }) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.dead_date = dead_date;
@@ -35,7 +36,7 @@ class Task {
         try {
             const user = await UserModel.findOne({ username: username });
             let { tasks } = user;
-            console.log(tasks);
+            // console.log(tasks);
             const updatedTasks = tasks.map((t) => {
                 if (t.id === this.id) {
                     return { ...t, status: !t.status };
@@ -43,10 +44,8 @@ class Task {
                 return t;
             });
             user.tasks = updatedTasks;
-            console.log(user.tasks);
-
             await user.save();
-            return updatedTasks;
+            return user.tasks;
         } catch (error) {
             console.error('Error al crear tarea:', error.message);
             throw error;

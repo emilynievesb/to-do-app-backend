@@ -101,7 +101,6 @@ class User {
         try {
             const task = new Task(this.task);
             const res = await task.changeStatusTask(this.username);
-            console.log(res);
             return {
                 res,
             };
