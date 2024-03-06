@@ -97,6 +97,18 @@ class User {
             throw error;
         }
     }
+    async getTasks() {
+        try {
+            const task = new Task();
+            const res = await task.getTasks(this.username);
+            return {
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
     async changeStatusTask() {
         try {
             const task = new Task(this.task);

@@ -58,6 +58,25 @@ const createNewTask = async (req, res) => {
         });
     }
 };
+const getTasks = async (req, res) => {
+    try {
+        const user = new User({ username: req.usuario.username });
+        const response = await user.changeStatusTask();
+
+        return res.json({
+            statusCode: 200,
+            status: true,
+            message: 'Consultado correctamente',
+            response,
+        });
+    } catch (error) {
+        res.status(400).json({
+            statusCode: 400,
+            status: true,
+            message: error.message,
+        });
+    }
+};
 const changeStatusTask = async (req, res) => {
     try {
         const user = new User({ username: req.usuario.username, task: req.DTO });
@@ -82,6 +101,7 @@ const httpMethods = {
     loginUser,
     createNewTask,
     changeStatusTask,
+    getTasks,
 };
 
 export default httpMethods;

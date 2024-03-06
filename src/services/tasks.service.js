@@ -15,6 +15,15 @@ class Task {
         this.degree = degree;
         this.status = status;
     }
+    async getTasks(username) {
+        try {
+            const user = await UserModel.findOne({ username: username });
+            return user.tasks;
+        } catch (error) {
+            console.error('Error al consultar tareas:', error.message);
+            throw error;
+        }
+    }
     async createTask(username) {
         try {
             const user = await UserModel.findOne({ username: username });
@@ -36,7 +45,6 @@ class Task {
         try {
             const user = await UserModel.findOne({ username: username });
             let { tasks } = user;
-            // console.log(tasks);
             const updatedTasks = tasks.map((t) => {
                 if (t.id === this.id) {
                     return { ...t, status: !t.status };
@@ -47,7 +55,7 @@ class Task {
             await user.save();
             return user.tasks;
         } catch (error) {
-            console.error('Error al crear tarea:', error.message);
+            console.error('Error al cambiar estado de tarea:', error.message);
             throw error;
         }
     }

@@ -13,6 +13,8 @@ const userInitRoute = () => {
     router.post('/login-user/', loginUserDTO, userController.loginUser);
     //? Ruta para agregar una task
     router.post('/create-task/', verifyAccessToken, createTaskDTO, userController.createNewTask);
+    //? Ruta para obtener tasks
+    router.get('/get-tasks/', verifyAccessToken, userController.getTasks);
     //? Ruta para cambiar estado de la task
     router.put('/change-status-task/', verifyAccessToken, changeStatusTaskDTO, userController.changeStatusTask);
 
