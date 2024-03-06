@@ -61,7 +61,27 @@ const createNewTask = async (req, res) => {
 const getTasks = async (req, res) => {
     try {
         const user = new User({ username: req.usuario.username });
-        const response = await user.changeStatusTask();
+        const response = await user.getTasks();
+
+        return res.json({
+            statusCode: 200,
+            status: true,
+            message: 'Consultado correctamente',
+            response,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            statusCode: 400,
+            status: true,
+            message: error.message,
+        });
+    }
+};
+const getTask = async (req, res) => {
+    try {
+        const user = new User({ username: req.usuario.username, task: req.DTO });
+        const response = await user.getTask();
 
         return res.json({
             statusCode: 200,
@@ -101,6 +121,7 @@ const httpMethods = {
     loginUser,
     createNewTask,
     changeStatusTask,
+    getTask,
     getTasks,
 };
 
