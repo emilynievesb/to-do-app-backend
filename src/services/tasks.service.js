@@ -30,7 +30,7 @@ class Task {
             const { tasks } = user;
             return tasks.find((task) => task.id === this.id);
         } catch (error) {
-            console.error('Error al consultar tareas:', error.message);
+            console.error('Error al consultar tarea:', error.message);
             throw error;
         }
     }
@@ -66,6 +66,25 @@ class Task {
             return user.tasks;
         } catch (error) {
             console.error('Error al cambiar estado de tarea:', error.message);
+            throw error;
+        }
+    }
+    async updateTask(username) {
+        try {
+            const user = await UserModel.findOne({ username: username });
+            let { tasks } = user;
+            const updatedTasks = tasks.map((t) => {
+                if (t.id === this.id) {
+                    return { ...t, title: this.title, description: this.description, dead_date: new Date(this.dead_date), degree: this.degree };
+                }
+                return t;
+            });
+            user.tasks = updatedTasks;
+            await user.save();
+
+            return user.tasks;
+        } catch (error) {
+            console.error('Error al actualizar tarea:', error.message);
             throw error;
         }
     }

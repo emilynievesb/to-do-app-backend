@@ -133,6 +133,18 @@ class User {
             throw error;
         }
     }
+    async updateTask() {
+        try {
+            const task = new Task(this.task);
+            const res = await task.updateTask(this.username);
+            return {
+                res,
+            };
+        } catch (error) {
+            console.log(error.errInfo);
+            throw error;
+        }
+    }
 }
 
 export default User;
