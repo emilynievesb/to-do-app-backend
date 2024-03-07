@@ -1,14 +1,17 @@
+import { v4 as uuidv4 } from 'uuid';
 import UserModel from '../schemas/user.schema.js';
 
 class Task {
     id;
+    n;
     title;
     description;
     dead_date;
     degree;
     status;
-    constructor({ id = 1, title = 'Título', description = 'Descripción', dead_date = 'fecha', degree = 'Normal', status = false }) {
+    constructor({ id = uuidv4(), n = 1, title = 'Título', description = 'Descripción', dead_date = 'fecha', degree = 'Normal', status = false }) {
         this.id = id;
+        this.n = n;
         this.title = title;
         this.description = description;
         this.dead_date = dead_date;
@@ -37,7 +40,13 @@ class Task {
     async createTask(username) {
         try {
             const user = await UserModel.findOne({ username });
-            user.tasks.push(this);
+            const { tasks } = user;
+            const nextId = Math.max(...tasks.map((t) => t.n)) + 1;
+            const newTask = {
+                ...this,
+                n: nextId,
+            };
+            user.tasks.push(newTask);
             await user.save();
             return newTask;
         } catch (error) {

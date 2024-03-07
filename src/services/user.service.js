@@ -15,6 +15,7 @@ class User {
         password,
         task = {
             id: uuidv4(),
+            n: 1,
             title: 'Tarea de ejemplo',
             description: 'Descripción de la tarea',
             dead_date: new Date('2024-12-15'),
