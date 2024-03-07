@@ -37,13 +37,7 @@ class Task {
     async createTask(username) {
         try {
             const user = await UserModel.findOne({ username });
-            const { tasks } = user;
-            const nextId = Math.max(...tasks.map((t) => t.id)) + 1;
-            const newTask = {
-                ...this,
-                id: nextId,
-            };
-            user.tasks.push(newTask);
+            user.tasks.push(this);
             await user.save();
             return newTask;
         } catch (error) {

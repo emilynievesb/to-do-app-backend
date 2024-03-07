@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 import UserModel from '../schemas/user.schema.js';
 import config from '../config/config.js';
 import Task from './tasks.service.js';
@@ -13,7 +14,7 @@ class User {
         username,
         password,
         task = {
-            id: 1,
+            id: uuidv4(),
             title: 'Tarea de ejemplo',
             description: 'Descripción de la tarea',
             dead_date: new Date('2024-12-15'),
