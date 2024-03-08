@@ -19,7 +19,7 @@ export const createTaskDTO = async (req, res, next) => {
 export const getTaskDTO = async (req, res, next) => {
     try {
         const taskSchema = object({
-            id: number().required('El id de la task es requerido'),
+            id: string().required('El id de la task es requerido'),
         });
 
         req.DTO = await taskSchema.validate(req.query);
@@ -32,7 +32,7 @@ export const getTaskDTO = async (req, res, next) => {
 export const changeStatusTaskDTO = async (req, res, next) => {
     try {
         const taskSchema = object({
-            id: number().required('El id de la task es requerido'),
+            id: string().required('El id de la task es requerido'),
         });
 
         req.DTO = await taskSchema.validate(req.query);
@@ -59,7 +59,7 @@ export const updateTaskDTO = async (req, res, next) => {
 export const deleteTaskDTO = async (req, res, next) => {
     try {
         const taskSchema = object({
-            id: number().required('El id de la task es requerido'),
+            id: string().required('El id de la task es requerido'),
         });
 
         req.DTO = await taskSchema.validate(req.query);
