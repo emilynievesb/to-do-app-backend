@@ -44,6 +44,7 @@ export const changeStatusTaskDTO = async (req, res, next) => {
 export const updateTaskDTO = async (req, res, next) => {
     try {
         const taskSchema = object({
+            id: string().required('El id de la tarea es requerido'),
             title: string().required('El título de la tarea es requerido'),
             description: string().required('La descripción de la tarea es requerida'),
             dead_date: date().required('La fecha límite de la tarea es requerida'),
